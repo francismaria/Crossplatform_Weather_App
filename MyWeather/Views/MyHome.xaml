@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" x:Class="MyWeather.Views.MyHome">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="My Weather"
+                     Order="Primary"
+                     />
+        <ToolbarItem
+                 IconImageSource="newcityicon.png"
+                 Order="Primary"
+                 Clicked="OpenNewCityPage"
+                 Priority="0" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <ListView ItemsSource="{Binding MyCitiesCollection}"
+                  ItemTapped="OnItemSelected">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <TextCell Detail="{Binding CityCountry}" Text="{Binding CityName}"></TextCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </ContentPage.Content>
+</ContentPage>
