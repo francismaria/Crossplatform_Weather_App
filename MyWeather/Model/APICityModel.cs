@@ -64,6 +64,18 @@ namespace MyWeather.Model
         {
             get; set;
         }
-        
+
+        public override bool Equals(Object obj)
+        {
+            if ((obj == null) || !this.GetType().Equals(obj.GetType()))
+            {
+                return false;
+            }
+            else
+            {
+                APICityModel p = (APICityModel)obj;
+                return ID == p.ID;
+            }
+        }
     }
 }

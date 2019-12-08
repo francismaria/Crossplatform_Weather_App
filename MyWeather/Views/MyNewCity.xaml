@@ -9,7 +9,14 @@
         <StackLayout>
             <SearchBar Placeholder="Search for a city..."
                        TextChanged="OnTextChanged"/>
-            <ListView x:Name="citySearchResults"/>
+            <ListView x:Name="citySearchResults"
+                      ItemTapped="AddToMyCities">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextCell Detail="{Binding Country}" Text="{Binding Name}"></TextCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

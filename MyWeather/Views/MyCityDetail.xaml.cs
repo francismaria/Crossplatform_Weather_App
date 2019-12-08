@@ -47,7 +47,7 @@ namespace MyWeather.Views
                 BindingContext = weatherData;
             } catch (Exception e)
             {
-                Debug.WriteLine("_SendAPIRequest: Connection exception occurred.");
+                Debug.WriteLine("_SendAPIRequest: Connection exception occurred. " + e);
                 ShowErrorMessage();
             }
         }

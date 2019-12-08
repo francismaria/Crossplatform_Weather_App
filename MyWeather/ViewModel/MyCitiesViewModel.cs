@@ -11,7 +11,16 @@ namespace MyWeather.ViewModel
         public MyCitiesViewModel()
         {
             MyCitiesCollection = new ObservableCollection<APICityModel>();
-            MyCitiesCollection.Add(CitiesData.Cities[0]);
+            // MyCitiesCollection.Add(CitiesData.Cities[0]);
+        }
+
+        public void AddNewMyCity(APICityModel newCity)
+        {
+            if (MyCitiesCollection.Contains(newCity))
+            {
+                return;
+            }
+            MyCitiesCollection.Add(newCity);
         }
     }
 }
