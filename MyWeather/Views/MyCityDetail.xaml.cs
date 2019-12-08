@@ -10,16 +10,35 @@ namespace MyWeather.Views
     public partial class MyCityDetail : ContentPage
     {
         private int id;
+        private string cityName;
+        private string cityCountry;
+
         private RESTService _restService;
 
         public MyCityDetail(int id, string cityName, string cityCountry)
         {
             InitializeComponent();
-            Debug.WriteLine("enteref");
+            
+            Debug.WriteLine("ENTERED HERE--------");
+
             this.id = id;
+            this.cityName = cityName;
+            this.cityCountry = cityCountry;
+
             _restService = new RESTService();
 
+            InitializeToolbar();
             SendAPIRequest();
+        }
+
+        private void InitializeToolbar()
+        {
+            var toolBarItem = new ToolbarItem
+            {
+                Text = this.cityName + ", " + this.cityCountry
+            };
+
+            ToolbarItems.Add(toolBarItem);
         }
 
         private async void SendAPIRequest()
