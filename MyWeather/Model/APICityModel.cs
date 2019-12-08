@@ -25,20 +25,45 @@ namespace MyWeather.Model
             }
         }
 
-        private string id;
-        private string name;
-        private string country;
-        private Coord coord;
-        
+        private Coord CoordObj;
+
 
         public APICityModel(string id, string name, string country, string lon, string lat)
         {
-            this.id = id;
-            this.name = name;
-            this.country = country;
-            this.coord = new Coord(lon, lat);
+            ID = id;
+            Name = name;
+            Country = country;
+
+            CoordObj = new Coord(lon, lat);
+
+            Longitude = CoordObj.getLongitude();
+            Latitude = CoordObj.getLatitude();
+        } 
+
+        public string ID
+        {
+            get; set;
         }
 
+        public string Name
+        {
+            get; set;
+        }
 
+        public string Country
+        {
+            get; set;
+        }
+
+        public string Longitude
+        {
+            get; set;
+        }
+
+        public string Latitude
+        {
+            get; set;
+        }
+        
     }
 }

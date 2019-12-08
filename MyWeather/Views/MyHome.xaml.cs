@@ -17,8 +17,8 @@ namespace MyWeather.Views
 
         private async void OnItemSelected(Object sender, ItemTappedEventArgs e)
         {   
-            var details = e.Item as CityModel;
-            await Navigation.PushAsync(new MyCityDetail(details.id, details.CityName, details.CityCountry));
+            var details = e.Item as APICityModel;
+            await Navigation.PushAsync(new MyCityDetail(details.ID, details.Name, details.Country));
         }
 
         private async void OpenNewCityPage(object sender, EventArgs e)

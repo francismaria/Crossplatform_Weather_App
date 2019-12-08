@@ -4,12 +4,8 @@ using MyWeather.Model;
 
 namespace MyWeather
 {
-    public class CitiesData
+    public static class CitiesData
     {
-        public CitiesData()
-        {
-        }
-
         public static List<APICityModel> Cities = new List<APICityModel>()
         {
             new APICityModel("2742611", "Aveiro", "PT", "-8.64554", "40.644272"),

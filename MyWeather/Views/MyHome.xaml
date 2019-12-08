@@ -15,7 +15,7 @@
                   ItemTapped="OnItemSelected">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <TextCell Detail="{Binding CityCountry}" Text="{Binding CityName}"></TextCell>
+                    <TextCell Detail="{Binding Country}" Text="{Binding Name}"></TextCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

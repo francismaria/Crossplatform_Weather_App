@@ -8,9 +8,8 @@
     <ContentPage.Content>
         <StackLayout>
             <SearchBar Placeholder="Search for a city..."
-                       SearchButtonPressed="SearchCity"/>
-            <ListView x:Name="citySearchResults"
-                  ItemsSource="{Binding SearchResults}"/>
+                       TextChanged="OnTextChanged"/>
+            <ListView x:Name="citySearchResults"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -9,13 +9,13 @@ namespace MyWeather.Views
 {
     public partial class MyCityDetail : ContentPage
     {
-        private int id;
+        private string id;
         private string cityName;
         private string cityCountry;
 
         private RESTService _restService;
 
-        public MyCityDetail(int id, string cityName, string cityCountry)
+        public MyCityDetail(string id, string cityName, string cityCountry)
         {
             InitializeComponent();
             
@@ -64,7 +64,6 @@ namespace MyWeather.Views
         {
             string requestUri = endpoint;
             requestUri += $"?q={this.id}";
-            requestUri += "&units=imperial"; // or units=metric
             requestUri += $"&APPID={Constants.OpenWeatherMapAPIKey}";
             return requestUri;
         }
