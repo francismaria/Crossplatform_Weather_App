@@ -20,22 +20,17 @@ namespace MyWeather.Connection
         {
             WeatherData weatherData = null;
 
-            try
+           
+            HttpResponseMessage response = await client.GetAsync(uri);
+            if (response.IsSuccessStatusCode)
             {
-                HttpResponseMessage response = await client.GetAsync(uri);
-                if (response.IsSuccessStatusCode)
-                {
-                    string content = await response.Content.ReadAsStringAsync();
-                    weatherData = JsonConvert.DeserializeObject<WeatherData>(content);
-                } else
-                {
-                    throw new Exception();
-                }
-            }
-            catch(Exception ex)
+                string content = await response.Content.ReadAsStringAsync();
+                weatherData = JsonConvert.DeserializeObject<WeatherData>(content);
+            } else
             {
-                Debug.WriteLine("\tERROR {0}", ex.Message);
+                throw new Exception();
             }
+            
 
             return weatherData;
         }

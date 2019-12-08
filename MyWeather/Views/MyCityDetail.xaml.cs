@@ -18,8 +18,6 @@ namespace MyWeather.Views
         public MyCityDetail(string id, string cityName, string cityCountry)
         {
             InitializeComponent();
-            
-            Debug.WriteLine("ENTERED HERE--------");
 
             this.id = id;
             this.cityName = cityName;

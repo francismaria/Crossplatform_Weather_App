@@ -12,15 +12,12 @@ namespace MyWeather.Views
             InitializeComponent();
         }
 
-        private async void SearchCity(object sender, EventArgs e)
-        {
-
-        }
-
         private void OnTextChanged(object sender, EventArgs e)
         {
             SearchBar searchBar = (SearchBar)sender;
             citySearchResults.ItemsSource = /*DataService.GetSearchResults(searchBar.Text);*/ null;
+
+            System.Diagnostics.Debug.WriteLine("DEBUGGGGG" + searchBar.Text);
         }
     }
 }
