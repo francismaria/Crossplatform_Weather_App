@@ -45,11 +45,25 @@ namespace MyWeather.Views
             {
                 WeatherData weatherData = await _restService.GetWeatherDataAsync(GenerateRequestUri(Constants.OpenWeatherMapEndpoint));
                 BindingContext = weatherData;
+
+                HideActivityIndicator();
+                ShowContentPanel();
             } catch (Exception e)
             {
                 Debug.WriteLine("_SendAPIRequest: Connection exception occurred. " + e);
                 ShowErrorMessage();
             }
+        }
+
+        private void HideActivityIndicator()
+        {
+            loader.IsRunning = false;
+            loader.HeightRequest = 0;   // removes the gap (sets the height to 0)
+        }
+
+        private void ShowContentPanel()
+        {
+            contentPanel.IsVisible = true;
         }
 
         private void ShowErrorMessage()
@@ -61,7 +75,7 @@ namespace MyWeather.Views
         private string GenerateRequestUri(string endpoint)
         {
             string requestUri = endpoint;
-            requestUri += $"?q={this.id}";
+            requestUri += $"?id={this.id}";
             requestUri += $"&APPID={Constants.OpenWeatherMapAPIKey}";
             return requestUri;
         }

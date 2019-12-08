@@ -10,10 +10,13 @@ namespace MyWeather.Views
     public partial class MyHome : ContentPage
     {
         private MyCitiesViewModel model;
+
         public MyHome()
         {
             InitializeComponent();
+
             model = new MyCitiesViewModel();
+
             BindingContext = model;
         }
 

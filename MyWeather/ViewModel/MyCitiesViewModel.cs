@@ -11,7 +11,6 @@ namespace MyWeather.ViewModel
         public MyCitiesViewModel()
         {
             MyCitiesCollection = new ObservableCollection<APICityModel>();
-            // MyCitiesCollection.Add(CitiesData.Cities[0]);
         }
 
         public void AddNewMyCity(APICityModel newCity)
@@ -21,6 +20,11 @@ namespace MyWeather.ViewModel
                 return;
             }
             MyCitiesCollection.Add(newCity);
+        }
+
+        public void RemoveMyCity(APICityModel city)
+        {
+            // TODO: remove my city feature
         }
     }
 }
