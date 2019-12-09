@@ -4,17 +4,62 @@
          
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout HorizontalOptions="Center">
-            <ActivityIndicator Color="Black"
-                    x:Name="loader"
-                    IsRunning="True"
-                    VerticalOptions="Center"
-                    HorizontalOptions="Center"
-                   />
-            <StackLayout x:Name="contentPanel"
-                         IsVisible="false">
-                <Label Text="AHAHAHHAHA" />
+        <ScrollView>
+            <StackLayout HorizontalOptions="Center">
+                <ActivityIndicator Color="Black"
+                        x:Name="loader"
+                        IsRunning="True"
+                        VerticalOptions="Center"
+                        HorizontalOptions="Center"
+                       />
+                <StackLayout x:Name="contentPanel"
+                                IsVisible="false">
+                    <Label x:Name="weatherLabel"
+                           FontSize="Large"/>
+                    <Label x:Name="descriptionLabel"
+                           FontSize="Small"/>
+                    <Grid Margin="20,35,20,20">
+                         
+                    </Grid>
+                    <Label Margin="20, 0, 0, 0"
+                           Text="Details"
+                           FontAttributes="Bold"/>
+                    <Grid Margin="20,0,20,0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.4*" />
+                        <ColumnDefinition Width="0.6*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                        <Label Text="Humidity" />
+                        <Label Grid.Column="1"
+                               x:Name="humidityLabel"/>
+                        <Label Grid.Row="1"
+                               Text="Pressure" />
+                        <Label Grid.Column="1"
+                               Grid.Row="1"
+                               x:Name="pressureLabel" />
+                        <Label Grid.Row="2"
+                               Text="Wind Speed" />
+                        <Label Grid.Column="1"
+                               Grid.Row="2"
+                               x:Name="windSpeedLabel" />
+                        <Label Grid.Row="3"
+                               Text="Wind Direction" />
+                        <Label Grid.Column="1"
+                               Grid.Row="3"
+                               x:Name="windDirectionLabel" />
+                    </Grid>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="Title" />
+                        <Label x:Name="titleLbl"></Label>
+                    </StackLayout>
+                </StackLayout>
             </StackLayout>
-        </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

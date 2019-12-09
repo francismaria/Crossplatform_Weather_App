@@ -47,7 +47,7 @@ namespace MyWeather.Views
                 BindingContext = weatherData;
 
                 HideActivityIndicator();
-                ShowContentPanel();
+                ShowContentPanel(weatherData);
             } catch (Exception e)
             {
                 Debug.WriteLine("_SendAPIRequest: Connection exception occurred. " + e);
@@ -61,9 +61,16 @@ namespace MyWeather.Views
             loader.HeightRequest = 0;   // removes the gap (sets the height to 0)
         }
 
-        private void ShowContentPanel()
+        private void ShowContentPanel(WeatherData weatherData)
         {
             contentPanel.IsVisible = true;
+
+            weatherLabel.Text = weatherData.Weather[0].Visibility;
+            descriptionLabel.Text = weatherData.Weather[0].Description;
+            humidityLabel.Text = weatherData.Main.Humidity.ToString() + $"%";
+            pressureLabel.Text = weatherData.Main.Pressure.ToString();
+            windSpeedLabel.Text = weatherData.Wind.Speed.ToString() + $" meter/sec";
+            windDirectionLabel.Text = weatherData.Wind.Deg.ToString() + $"º";
         }
 
         private void ShowErrorMessage()
@@ -76,6 +83,7 @@ namespace MyWeather.Views
         {
             string requestUri = endpoint;
             requestUri += $"?id={this.id}";
+            requestUri += $"&units=metric";
             requestUri += $"&APPID={Constants.OpenWeatherMapAPIKey}";
             return requestUri;
         }
