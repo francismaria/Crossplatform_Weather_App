@@ -20,6 +20,21 @@ namespace MyWeather.Views
             BindingContext = model;
         }
 
+        protected override void OnAppearing()
+        {
+            if (model.MyCitiesCollection.Count == 0)
+            {
+                savedCitiesList.IsVisible = false;
+                noCitiesPanel.IsVisible = true;
+            }
+            else
+            {
+                savedCitiesList.IsVisible = true;
+                noCitiesPanel.IsVisible = false;
+            }
+        }
+
+
         private async void OnItemSelected(Object sender, ItemTappedEventArgs e)
         {   
             var details = e.Item as APICityModel;

@@ -11,13 +11,20 @@
                  Priority="0" />
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <ListView ItemsSource="{Binding MyCitiesCollection}"
-                  ItemTapped="OnItemSelected">
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <TextCell Detail="{Binding Country}" Text="{Binding Name}"></TextCell>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+        <StackLayout>
+            <ScrollView x:Name="savedCitiesList">
+                <ListView ItemsSource="{Binding MyCitiesCollection}"
+                          ItemTapped="OnItemSelected">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextCell Detail="{Binding Country}" Text="{Binding Name}"></TextCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollView>
+            <StackLayout x:Name="noCitiesPanel">
+                <Label Text="You have no saved cities" />
+            </StackLayout>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>
