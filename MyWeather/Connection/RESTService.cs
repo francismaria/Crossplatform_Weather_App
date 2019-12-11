@@ -34,5 +34,27 @@ namespace MyWeather.Connection
 
             return weatherData;
         }
+
+        public async Task<WeatherData> GetNextDayWeatherDataAsync(string uri)
+        {
+            /*
+            WeatherData[] weatherData = null;
+
+
+            HttpResponseMessage response = await client.GetAsync(uri);
+            if (response.IsSuccessStatusCode)
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                weatherData = JsonConvert.DeserializeObject<WeatherData[]>(content);
+            }
+            else
+            {
+                throw new Exception();
+            }
+
+    */
+            //return weatherData;
+            return null;
+        }
     }
 }

@@ -132,5 +132,23 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\newcityicon.png" />
+    <BundleResource Include="Resources\01d%402x.png" />
+    <BundleResource Include="Resources\01n%402x.png" />
+    <BundleResource Include="Resources\02d%402x.png" />
+    <BundleResource Include="Resources\02n%402x.png" />
+    <BundleResource Include="Resources\03d%402x.png" />
+    <BundleResource Include="Resources\03n%402x.png" />
+    <BundleResource Include="Resources\04d%402x.png" />
+    <BundleResource Include="Resources\04n%402x.png" />
+    <BundleResource Include="Resources\09d%402x.png" />
+    <BundleResource Include="Resources\09n%402x.png" />
+    <BundleResource Include="Resources\10d%402x.png" />
+    <BundleResource Include="Resources\10n%402x.png" />
+    <BundleResource Include="Resources\11d%402x.png" />
+    <BundleResource Include="Resources\11n%402x.png" />
+    <BundleResource Include="Resources\13d%402x.png" />
+    <BundleResource Include="Resources\13n%402x.png" />
+    <BundleResource Include="Resources\50d%402x.png" />
+    <BundleResource Include="Resources\50n%402x.png" />
   </ItemGroup>
 </Project>
