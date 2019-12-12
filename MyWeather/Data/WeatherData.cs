@@ -1,8 +1,25 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 
 namespace MyWeather.Data
 {
+    
+    public class WeatherForecastData
+    {
+        [JsonProperty("cod")]
+        public string Vod { get; set; }
+
+        [JsonProperty("message")]
+        public double Message { get; set; }
+
+        [JsonProperty("cnt")]
+        public int Cnt { get; set; }
+
+        [JsonProperty("list")]
+        public List<WeatherData> Items { get; set; }
+    }
+
     public class WeatherData
     {
         [JsonProperty("name")]
@@ -31,6 +48,9 @@ namespace MyWeather.Data
 
         [JsonProperty("dt")]
         public long Dt { get; set; }
+
+        [JsonProperty("Dt_Txt")]
+        public string Dt_Txt { get; set; }
 
         [JsonProperty("sys")]
         public Sys Sys { get; set; }
@@ -119,4 +139,5 @@ namespace MyWeather.Data
         [JsonProperty("deg")]
         public long Deg { get; set; }
     }
+
 }

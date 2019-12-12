@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using MyWeather.Connection;
 using MyWeather.Data;
@@ -78,15 +79,13 @@ namespace MyWeather.Views
         {
             // Temperature
             weatherTemp.Text = ConvertTempIntToStr(weatherData.Main.Temperature) + $"ºC";
-            // weatherTempMin.Text = ConvertTempIntToStr(weatherData.Main.TempMin) + $"ºC";
-            //weatherTempMax.Text = ConvertTempIntToStr(weatherData.Main.TempMax) + $"ºC";
             weatherTempMax.Text = ConvertTempIntToStr(weatherData.Main.TempMax) + $"ºC / " + ConvertTempIntToStr(weatherData.Main.TempMax) + $"ºC";
 
             weatherLabel.Text = weatherData.Weather[0].Visibility;
             // Details
             descriptionLabel.Text = weatherData.Weather[0].Description;
             humidityLabel.Text = weatherData.Main.Humidity.ToString() + $"%";
-            pressureLabel.Text = weatherData.Main.Pressure.ToString();
+            pressureLabel.Text = weatherData.Main.Pressure.ToString() + $" hPa";
             windSpeedLabel.Text = weatherData.Wind.Speed.ToString() + $" meter/sec";
             windDirectionLabel.Text = weatherData.Wind.Deg.ToString() + $"º";
 
@@ -101,21 +100,49 @@ namespace MyWeather.Views
 
         private async void SendNextDayForecastRequest()
         {
-            //WeatherData[] forecast = await _restService.GetNextDayWeatherDataAsync(GenerateRequestUri(Constants.OpenWeatherNextDayMapEndpoint));
+            List<WeatherData> forecastNextDay = await _restService.GetNextDayWeatherDataAsync(GenerateNextDayRequestUri(Constants.OpenWeatherNextDayMapEndpoint));
+            forecastNextDay = GetNextDayForecasts(forecastNextDay);
 
-            BindNextDayForecastWeatherInformation();
+            // 2019 - 12 - 16 00:00:00
+         
+            BindNextDayForecastWeatherInformation(forecastNextDay);
         }
 
-        private void BindNextDayForecastWeatherInformation()
+        private List<WeatherData> GetNextDayForecasts(List<WeatherData> forecast)
         {
-            icon0.Source = GenerateIconRequestUri(Constants.OpenWeatherIconsEndpoint, "01d", Constants.OpenWeatherIconExtension);
-            icon3.Source = GenerateIconRequestUri(Constants.OpenWeatherIconsEndpoint, "01d", Constants.OpenWeatherIconExtension);
-            icon6.Source = GenerateIconRequestUri(Constants.OpenWeatherIconsEndpoint, "01d", Constants.OpenWeatherIconExtension);
-            icon9.Source = GenerateIconRequestUri(Constants.OpenWeatherIconsEndpoint, "01d", Constants.OpenWeatherIconExtension);
-            icon12.Source = GenerateIconRequestUri(Constants.OpenWeatherIconsEndpoint, "01d", Constants.OpenWeatherIconExtension);
-            icon15.Source = GenerateIconRequestUri(Constants.OpenWeatherIconsEndpoint, "01d", Constants.OpenWeatherIconExtension);
-            icon18.Source = GenerateIconRequestUri(Constants.OpenWeatherIconsEndpoint, "01d", Constants.OpenWeatherIconExtension);
-            icon21.Source = GenerateIconRequestUri(Constants.OpenWeatherIconsEndpoint, "01d", Constants.OpenWeatherIconExtension);
+            int count = 0;
+            List<WeatherData> nextDay = new List<WeatherData>();
+
+            foreach (WeatherData w in forecast)
+            {
+                DateTime dt = DateTime.ParseExact(w.Dt_Txt, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+                
+                if(dt.Day == (System.DateTime.Now.Day + 1))
+                {
+                    break;
+                }
+                count++;
+            }
+
+            int window = count + 8;
+            for(int i = count; i < window; i++)
+            {
+                nextDay.Add(forecast[i]);
+            }
+
+            return nextDay;
+        }
+
+        private void BindNextDayForecastWeatherInformation(List<WeatherData> forecastNextDay)
+        {
+            icon0.Source = GenerateIconRequestUri(Constants.OpenWeatherIconsEndpoint, forecastNextDay[0].Weather[0].Icon, Constants.OpenWeatherIconExtension);
+            icon3.Source = GenerateIconRequestUri(Constants.OpenWeatherIconsEndpoint, forecastNextDay[1].Weather[0].Icon, Constants.OpenWeatherIconExtension);
+            icon6.Source = GenerateIconRequestUri(Constants.OpenWeatherIconsEndpoint, forecastNextDay[2].Weather[0].Icon, Constants.OpenWeatherIconExtension);
+            icon9.Source = GenerateIconRequestUri(Constants.OpenWeatherIconsEndpoint, forecastNextDay[3].Weather[0].Icon, Constants.OpenWeatherIconExtension);
+            icon12.Source = GenerateIconRequestUri(Constants.OpenWeatherIconsEndpoint, forecastNextDay[4].Weather[0].Icon, Constants.OpenWeatherIconExtension);
+            icon15.Source = GenerateIconRequestUri(Constants.OpenWeatherIconsEndpoint, forecastNextDay[5].Weather[0].Icon, Constants.OpenWeatherIconExtension);
+            icon18.Source = GenerateIconRequestUri(Constants.OpenWeatherIconsEndpoint, forecastNextDay[6].Weather[0].Icon, Constants.OpenWeatherIconExtension);
+            icon21.Source = GenerateIconRequestUri(Constants.OpenWeatherIconsEndpoint, forecastNextDay[7].Weather[0].Icon, Constants.OpenWeatherIconExtension);
         }
 
         private void ShowErrorMessage()
