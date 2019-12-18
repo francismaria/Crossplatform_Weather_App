@@ -4,7 +4,8 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using MyWeather.Connection;
 using MyWeather.Data;
-
+using SkiaSharp;
+using SkiaSharp.Views.Forms;
 using Xamarin.Forms;
 
 namespace MyWeather.Views
@@ -14,6 +15,10 @@ namespace MyWeather.Views
         private string id;
         private string cityName;
         private string cityCountry;
+        private List<int> nextDayTemperatures;
+        private int nextDayTempDiff;
+        private int minTempNextDay;
+        private int maxTempNextDay;
 
         private RESTService _restService;
 
@@ -24,6 +29,7 @@ namespace MyWeather.Views
             this.id = id;
             this.cityName = cityName;
             this.cityCountry = cityCountry;
+            this.nextDayTemperatures = new List<int>();
 
             _restService = new RESTService();
 
@@ -47,6 +53,11 @@ namespace MyWeather.Views
             {
                 await SendCurrentWeatherRequest();
                 await SendNextDayForecastRequest();
+
+                // Forces the skia chart graphic to paint just after it got the response from the server
+                canvasView.PaintSurface += OnCanvasViewPaintSurface;
+                canvasView.InvalidateSurface();
+
                 HideActivityIndicator();
             }
             catch (Exception e)
@@ -57,7 +68,7 @@ namespace MyWeather.Views
         }
 
         private async Task SendCurrentWeatherRequest()
-        { 
+        {
             WeatherData weatherData = await _restService.GetWeatherDataAsync(GenerateRequestUri(Constants.OpenWeatherMapEndpoint));
             BindingContext = weatherData;
 
@@ -103,6 +114,7 @@ namespace MyWeather.Views
             List<WeatherData> forecastNextDay = await _restService.GetNextDayWeatherDataAsync(GenerateNextDayRequestUri(Constants.OpenWeatherNextDayMapEndpoint));
             forecastNextDay = GetNextDayForecasts(forecastNextDay);
             BindNextDayForecastWeatherInformation(forecastNextDay);
+            GetMaxTempNextDayForecast();
         }
 
         private List<WeatherData> GetNextDayForecasts(List<WeatherData> forecast)
@@ -113,8 +125,8 @@ namespace MyWeather.Views
             foreach (WeatherData w in forecast)
             {
                 DateTime dt = DateTime.ParseExact(w.Dt_Txt, "yyyy-MM-dd HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-                
-                if(dt.Day == (System.DateTime.Now.Day + 1))
+
+                if (dt.Day == (DateTime.Now.Day + 1))
                 {
                     break;
                 }
@@ -123,13 +135,15 @@ namespace MyWeather.Views
 
             int window = count + 8;
 
-            for(int i = count; i < window; i++)
+            for (int i = count; i < window; i++)
             {
                 nextDay.Add(forecast[i]);
             }
 
             return nextDay;
         }
+
+        //    <!--PaintSurface="OnCanvasViewPaintSurface"-->
 
         private void BindNextDayForecastWeatherInformation(List<WeatherData> forecastNextDay)
         {
@@ -142,16 +156,52 @@ namespace MyWeather.Views
             icon18.Source = GenerateIconRequestUri(Constants.OpenWeatherIconsEndpoint, forecastNextDay[6].Weather[0].Icon, Constants.OpenWeatherIconExtension);
             icon21.Source = GenerateIconRequestUri(Constants.OpenWeatherIconsEndpoint, forecastNextDay[7].Weather[0].Icon, Constants.OpenWeatherIconExtension);*/
 
+            // 00h
             icon0.Source = ImageSource.FromFile(GetIconPath(forecastNextDay[0].Weather[0].Icon));
+            nextDayTemperatures.Add((int)forecastNextDay[0].Main.Temperature);
+            // 03h
             icon3.Source = ImageSource.FromFile(GetIconPath(forecastNextDay[1].Weather[0].Icon));
+            nextDayTemperatures.Add((int)forecastNextDay[1].Main.Temperature);
+            // 06h
             icon6.Source = ImageSource.FromFile(GetIconPath(forecastNextDay[2].Weather[0].Icon));
+            nextDayTemperatures.Add((int)forecastNextDay[2].Main.Temperature);
+            // 09h
             icon9.Source = ImageSource.FromFile(GetIconPath(forecastNextDay[3].Weather[0].Icon));
+            nextDayTemperatures.Add((int)forecastNextDay[3].Main.Temperature);
+            // 12h
             icon12.Source = ImageSource.FromFile(GetIconPath(forecastNextDay[4].Weather[0].Icon));
+            nextDayTemperatures.Add((int)forecastNextDay[4].Main.Temperature);
+            // 15h
             icon15.Source = ImageSource.FromFile(GetIconPath(forecastNextDay[5].Weather[0].Icon));
+            nextDayTemperatures.Add((int)forecastNextDay[5].Main.Temperature);
+            // 18h
             icon18.Source = ImageSource.FromFile(GetIconPath(forecastNextDay[6].Weather[0].Icon));
+            nextDayTemperatures.Add((int)forecastNextDay[6].Main.Temperature);
+            // 21h
             icon21.Source = ImageSource.FromFile(GetIconPath(forecastNextDay[7].Weather[0].Icon));
-
+            nextDayTemperatures.Add((int)forecastNextDay[7].Main.Temperature);
         }
+
+        private void GetMaxTempNextDayForecast()
+        {
+            maxTempNextDay = nextDayTemperatures[0];
+            minTempNextDay = nextDayTemperatures[0];
+
+            for (int i = 1; i < nextDayTemperatures.Count; i++)
+            {
+                if(nextDayTemperatures[i] > maxTempNextDay)
+                {
+                    maxTempNextDay = nextDayTemperatures[i];
+                }
+                if (nextDayTemperatures[i] < minTempNextDay)
+                {
+                    minTempNextDay = nextDayTemperatures[i];
+                }
+            }
+
+            nextDayTempDiff = Math.Abs(maxTempNextDay) - Math.Abs(minTempNextDay);
+        }
+
 
         private void ShowErrorMessage()
         {
@@ -195,6 +245,60 @@ namespace MyWeather.Views
             requestUri += $"&units=metric";
             requestUri += $"&APPID={Constants.OpenWeatherMapAPIKey}";
             return requestUri;
+        }
+
+
+        private void OnCanvasViewPaintSurface(object sender, SKPaintSurfaceEventArgs args)
+        {
+
+            Debug.WriteLine("ahahahhahahahahahah");
+            SKSurface surface = args.Surface;
+            SKCanvas canvas = surface.Canvas;
+
+            canvas.Clear();
+
+            SKPaint linePaint = new SKPaint
+            {
+                Style = SKPaintStyle.Stroke,
+                Color = SKColors.Blue,
+                StrokeWidth = 5
+            };
+
+            SKPaint pointPaint = new SKPaint
+            {
+                Style = SKPaintStyle.Fill,
+                Color = SKColors.Red,
+                StrokeWidth = 1,
+                StrokeJoin = SKStrokeJoin.Round
+            };
+
+            const int CHART_HEIGHT = 100;
+            const int REMAINING_DAYS_TEMP = 7;
+            const int STACKS_MARGIN = 20;
+
+            double stackWidth = icon12.Width;
+
+            SKPoint prevPoint = new SKPoint((float)stackWidth, CHART_HEIGHT - GetRatio(nextDayTemperatures[0]));
+
+            for (int i = 1; i <= REMAINING_DAYS_TEMP; i++)
+            {
+                SKPoint newPoint = new SKPoint(prevPoint.X + ((float)stackWidth * (float)1.8 + STACKS_MARGIN), CHART_HEIGHT - GetRatio(nextDayTemperatures[i]));
+
+                Debug.WriteLine(nextDayTemperatures[i] + ", " + GetRatio(nextDayTemperatures[i]) + ", " + nextDayTempDiff);
+
+                canvas.DrawLine(prevPoint, newPoint, linePaint);
+
+                canvas.DrawCircle(prevPoint.X, prevPoint.Y, 10, pointPaint);
+                canvas.DrawCircle(newPoint.X, newPoint.Y, 10, pointPaint);
+
+                prevPoint = newPoint;
+            }
+        }
+
+        private int GetRatio(int currTemp)
+        {
+            int diff = nextDayTempDiff - (maxTempNextDay-currTemp);
+            return ((Math.Abs(diff) - nextDayTempDiff) * 100) / nextDayTempDiff;
         }
     }
 }
