@@ -101,7 +101,10 @@ namespace MyWeather.Views
             windSpeedLabel.Text = weatherData.Wind.Speed.ToString() + $" meter/sec";
             windDirectionLabel.Text = weatherData.Wind.Deg.ToString() + $"º";
 
-            weatherIcon.Source = GenerateIconRequestUri(Constants.OpenWeatherIconsEndpoint, weatherData.Weather[0].Icon, Constants.OpenWeatherIconExtension);
+            //weatherIcon.Source = GenerateIconRequestUri(Constants.OpenWeatherIconsEndpoint, weatherData.Weather[0].Icon, Constants.OpenWeatherIconExtension);
+            weatherIcon.Source = ImageSource.FromFile(GetIconPath(weatherData.Weather[0].Icon));
+            weatherIcon.WidthRequest = 100;
+            weatherIcon.HeightRequest = 100;
         }
 
         private string ConvertTempIntToStr(double temp)
@@ -158,27 +161,35 @@ namespace MyWeather.Views
 
             // 00h
             icon0.Source = ImageSource.FromFile(GetIconPath(forecastNextDay[0].Weather[0].Icon));
+            hour00Temp.Text = ((int)forecastNextDay[0].Main.Temperature).ToString() + "ºC";
             nextDayTemperatures.Add((int)forecastNextDay[0].Main.Temperature);
             // 03h
             icon3.Source = ImageSource.FromFile(GetIconPath(forecastNextDay[1].Weather[0].Icon));
+            hour03Temp.Text = ((int)forecastNextDay[1].Main.Temperature).ToString() + "ºC";
             nextDayTemperatures.Add((int)forecastNextDay[1].Main.Temperature);
             // 06h
             icon6.Source = ImageSource.FromFile(GetIconPath(forecastNextDay[2].Weather[0].Icon));
+            hour06Temp.Text = ((int)forecastNextDay[2].Main.Temperature).ToString() + "ºC";
             nextDayTemperatures.Add((int)forecastNextDay[2].Main.Temperature);
             // 09h
             icon9.Source = ImageSource.FromFile(GetIconPath(forecastNextDay[3].Weather[0].Icon));
+            hour09Temp.Text = ((int)forecastNextDay[3].Main.Temperature).ToString() + "ºC";
             nextDayTemperatures.Add((int)forecastNextDay[3].Main.Temperature);
             // 12h
             icon12.Source = ImageSource.FromFile(GetIconPath(forecastNextDay[4].Weather[0].Icon));
+            hour12Temp.Text = ((int)forecastNextDay[4].Main.Temperature).ToString() + "ºC";
             nextDayTemperatures.Add((int)forecastNextDay[4].Main.Temperature);
             // 15h
             icon15.Source = ImageSource.FromFile(GetIconPath(forecastNextDay[5].Weather[0].Icon));
+            hour15Temp.Text = ((int)forecastNextDay[5].Main.Temperature).ToString() + "ºC";
             nextDayTemperatures.Add((int)forecastNextDay[5].Main.Temperature);
             // 18h
             icon18.Source = ImageSource.FromFile(GetIconPath(forecastNextDay[6].Weather[0].Icon));
+            hour18Temp.Text = ((int)forecastNextDay[6].Main.Temperature).ToString() + "ºC";
             nextDayTemperatures.Add((int)forecastNextDay[6].Main.Temperature);
             // 21h
             icon21.Source = ImageSource.FromFile(GetIconPath(forecastNextDay[7].Weather[0].Icon));
+            hour21Temp.Text = ((int)forecastNextDay[7].Main.Temperature).ToString() + "ºC";
             nextDayTemperatures.Add((int)forecastNextDay[7].Main.Temperature);
         }
 
@@ -250,8 +261,6 @@ namespace MyWeather.Views
 
         private void OnCanvasViewPaintSurface(object sender, SKPaintSurfaceEventArgs args)
         {
-
-            Debug.WriteLine("ahahahhahahahahahah");
             SKSurface surface = args.Surface;
             SKCanvas canvas = surface.Canvas;
 
@@ -260,14 +269,14 @@ namespace MyWeather.Views
             SKPaint linePaint = new SKPaint
             {
                 Style = SKPaintStyle.Stroke,
-                Color = SKColors.Blue,
+                Color = SKColors.DeepSkyBlue,
                 StrokeWidth = 5
             };
 
             SKPaint pointPaint = new SKPaint
             {
                 Style = SKPaintStyle.Fill,
-                Color = SKColors.Red,
+                Color = SKColors.OrangeRed,
                 StrokeWidth = 1,
                 StrokeJoin = SKStrokeJoin.Round
             };
@@ -282,9 +291,9 @@ namespace MyWeather.Views
 
             for (int i = 1; i <= REMAINING_DAYS_TEMP; i++)
             {
-                SKPoint newPoint = new SKPoint(prevPoint.X + ((float)stackWidth * (float)1.8 + STACKS_MARGIN), CHART_HEIGHT - GetRatio(nextDayTemperatures[i]));
-
-                Debug.WriteLine(nextDayTemperatures[i] + ", " + GetRatio(nextDayTemperatures[i]) + ", " + nextDayTempDiff);
+                // iOS scale factor = 1.8
+                // Android scale factor = 3.5
+                SKPoint newPoint = new SKPoint(prevPoint.X + ((float)stackWidth * (float)3.5 + STACKS_MARGIN), CHART_HEIGHT - GetRatio(nextDayTemperatures[i]));
 
                 canvas.DrawLine(prevPoint, newPoint, linePaint);
 

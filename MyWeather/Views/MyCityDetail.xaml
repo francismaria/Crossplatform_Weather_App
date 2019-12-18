@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:skia="clr-namespace:SkiaSharp;assembly=SkiaSharp"
              xmlns:skiaforms="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms"
-             x:Class="MyWeather.Views.MyCityDetail">
+             x:Class="MyWeather.Views.MyCityDetail"
+             BackgroundColor="WhiteSmoke">
     <ContentPage.ToolbarItems>
          
     </ContentPage.ToolbarItems>
@@ -20,6 +21,7 @@
                                 IsVisible="false">
                     <Label x:Name="weatherLabel"
                            FontSize="Large"
+                           FontAttributes="Bold"
                            Margin="20, 0"/>
                     <Label x:Name="descriptionLabel"
                            Margin="20, 0"
@@ -31,13 +33,18 @@
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
-                        <Image x:Name="weatherIcon"/>
+                        <Image x:Name="weatherIcon"
+                               Grid.RowSpan="2"/>
+                        <Label Text="Current Temperature"
+                               Grid.Column="2"/>
                         <Label x:Name="weatherTemp"
                                HorizontalOptions="Center"
+                               FontAttributes="Bold"
                                FontSize="Large"
                                Grid.Column="2"
-                               Grid.Row="1"/>
+                               Grid.Row="2"/>
                     </Grid>
                     <Label x:Name="weatherTempMax"
                            HorizontalTextAlignment="Center"/>
@@ -85,7 +92,6 @@
                                 Grid.Column="0"
                                 Grid.ColumnSpan="8"
                                 Margin="20, 0"/>
-
                     <Grid
                         x:Name="nextDaysForecast"
                         Margin="20, 0">
@@ -105,67 +111,99 @@
                         <StackLayout Grid.Column="1"
                                      Grid.Row="2"
                                      x:Name="forecastOneStack"
-                                     BackgroundColor="AliceBlue">
+                                     BackgroundColor="LightBlue">
                             <Image x:Name="icon0"/>
                             <Label HorizontalTextAlignment="Center"
                                    Text="00h"
                                    FontSize="Micro"/>
+                            <Label HorizontalTextAlignment="Center"
+                                   x:Name="hour00Temp"
+                                   FontAttributes="Bold"
+                                   FontSize="Micro"/>
                         </StackLayout>
                         <StackLayout Grid.Column="2"
                                      Grid.Row="2"
-                                     BackgroundColor="Aquamarine">
+                                     BackgroundColor="DeepSkyBlue">
                             <Image x:Name="icon3"/>
                             <Label Text="03h"
                                    HorizontalTextAlignment="Center"
                                    FontSize="Micro"/>
+                            <Label HorizontalTextAlignment="Center"
+                                   x:Name="hour03Temp"
+                                   FontAttributes="Bold"
+                                   FontSize="Micro"/>
                         </StackLayout>
                         <StackLayout Grid.Column="3"
                                      Grid.Row="2"
-                                     BackgroundColor="AliceBlue">
+                                     BackgroundColor="LightBlue">
                             <Image x:Name="icon6"/>
                             <Label Text="06h"
                                    FontSize="Micro"
                                    HorizontalTextAlignment="Center"/>
+                            <Label HorizontalTextAlignment="Center"
+                                   x:Name="hour06Temp"
+                                   FontAttributes="Bold"
+                                   FontSize="Micro"/>
                         </StackLayout>
                         <StackLayout Grid.Column="4"
                                      Grid.Row="2"
-                                     BackgroundColor="Aquamarine">
+                                     BackgroundColor="DeepSkyBlue">
                             <Image x:Name="icon9"/>
                             <Label Text="09h"
                                    FontSize="Micro"
                                    HorizontalTextAlignment="Center"/>
+                            <Label HorizontalTextAlignment="Center"
+                                   x:Name="hour09Temp"
+                                   FontAttributes="Bold"
+                                   FontSize="Micro"/>
                         </StackLayout>
                         <StackLayout Grid.Column="5"
                                      Grid.Row="2"
-                                     BackgroundColor="AliceBlue">
+                                     BackgroundColor="LightBlue">
                             <Image x:Name="icon12"/>
                             <Label Text="12h"
                                    FontSize="Micro"
                                    HorizontalTextAlignment="Center"/>
+                            <Label HorizontalTextAlignment="Center"
+                                   x:Name="hour12Temp"
+                                   FontAttributes="Bold"
+                                   FontSize="Micro"/>
                         </StackLayout>
                         <StackLayout Grid.Column="6"
                                      Grid.Row="2"
-                                     BackgroundColor="Aquamarine">
+                                     BackgroundColor="DeepSkyBlue">
                             <Image x:Name="icon15"/>
                             <Label Text="15h"
                                    FontSize="Micro"
                                    HorizontalTextAlignment="Center"/>
+                            <Label HorizontalTextAlignment="Center"
+                                   x:Name="hour15Temp"
+                                   FontAttributes="Bold"
+                                   FontSize="Micro"/>
                         </StackLayout>
                         <StackLayout Grid.Column="7"
                                      Grid.Row="2"
-                                     BackgroundColor="AliceBlue">
+                                     BackgroundColor="LightBlue">
                             <Image x:Name="icon18"/>
                             <Label Text="18h"
                                    FontSize="Micro"
                                    HorizontalTextAlignment="Center"/>
+                            <Label HorizontalTextAlignment="Center"
+                                   x:Name="hour18Temp"
+                                   FontAttributes="Bold"
+                                   FontSize="Micro"/>
                         </StackLayout>
                         <StackLayout Grid.Column="8"
                                      Grid.Row="2"
-                                     BackgroundColor="Aquamarine">
+                                     BackgroundColor="DeepSkyBlue">
                             <Image x:Name="icon21"/>
                             <Label Text="21h"
                                    FontSize="Micro"
                                    HorizontalTextAlignment="Center"/>
+                            <Label HorizontalTextAlignment="Center"
+                                   x:Name="hour21Temp"
+                                   FontAttributes="Bold"
+                                   FontSize="Micro"/>
                         </StackLayout>
                     </Grid>
                     

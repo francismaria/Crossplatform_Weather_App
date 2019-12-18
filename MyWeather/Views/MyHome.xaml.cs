@@ -15,6 +15,7 @@ namespace MyWeather.Views
         {
             InitializeComponent();
 
+            noCitiesLabel.Text = "Hi there,\n\n\nI am happy to assist you on your need to know the current temperature in your favorite cities!\n\n\nAt the moment, you have no saved cities :( \n\n\nTo add one, please click on the top right icon.";
             model = new MyCitiesViewModel();
 
             BindingContext = model;
