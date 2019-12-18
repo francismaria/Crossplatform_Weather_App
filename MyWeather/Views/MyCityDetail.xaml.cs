@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using MyWeather.Connection;
 using MyWeather.Data;
 
@@ -44,8 +45,8 @@ namespace MyWeather.Views
         {
             try
             {
-                SendCurrentWeatherRequest();
-                SendNextDayForecastRequest();
+                await SendCurrentWeatherRequest();
+                await SendNextDayForecastRequest();
                 HideActivityIndicator();
             }
             catch (Exception e)
@@ -55,7 +56,7 @@ namespace MyWeather.Views
             }
         }
 
-        private async void SendCurrentWeatherRequest()
+        private async Task SendCurrentWeatherRequest()
         { 
             WeatherData weatherData = await _restService.GetWeatherDataAsync(GenerateRequestUri(Constants.OpenWeatherMapEndpoint));
             BindingContext = weatherData;
@@ -95,16 +96,12 @@ namespace MyWeather.Views
         private string ConvertTempIntToStr(double temp)
         {
             return Convert.ToInt32(temp).ToString();
-           
         }
 
-        private async void SendNextDayForecastRequest()
+        private async Task SendNextDayForecastRequest()
         {
             List<WeatherData> forecastNextDay = await _restService.GetNextDayWeatherDataAsync(GenerateNextDayRequestUri(Constants.OpenWeatherNextDayMapEndpoint));
             forecastNextDay = GetNextDayForecasts(forecastNextDay);
-
-            // 2019 - 12 - 16 00:00:00
-         
             BindNextDayForecastWeatherInformation(forecastNextDay);
         }
 
@@ -125,6 +122,7 @@ namespace MyWeather.Views
             }
 
             int window = count + 8;
+
             for(int i = count; i < window; i++)
             {
                 nextDay.Add(forecast[i]);
@@ -135,14 +133,24 @@ namespace MyWeather.Views
 
         private void BindNextDayForecastWeatherInformation(List<WeatherData> forecastNextDay)
         {
-            icon0.Source = GenerateIconRequestUri(Constants.OpenWeatherIconsEndpoint, forecastNextDay[0].Weather[0].Icon, Constants.OpenWeatherIconExtension);
+            /*icon0.Source = GenerateIconRequestUri(Constants.OpenWeatherIconsEndpoint, forecastNextDay[0].Weather[0].Icon, Constants.OpenWeatherIconExtension);
             icon3.Source = GenerateIconRequestUri(Constants.OpenWeatherIconsEndpoint, forecastNextDay[1].Weather[0].Icon, Constants.OpenWeatherIconExtension);
             icon6.Source = GenerateIconRequestUri(Constants.OpenWeatherIconsEndpoint, forecastNextDay[2].Weather[0].Icon, Constants.OpenWeatherIconExtension);
             icon9.Source = GenerateIconRequestUri(Constants.OpenWeatherIconsEndpoint, forecastNextDay[3].Weather[0].Icon, Constants.OpenWeatherIconExtension);
             icon12.Source = GenerateIconRequestUri(Constants.OpenWeatherIconsEndpoint, forecastNextDay[4].Weather[0].Icon, Constants.OpenWeatherIconExtension);
             icon15.Source = GenerateIconRequestUri(Constants.OpenWeatherIconsEndpoint, forecastNextDay[5].Weather[0].Icon, Constants.OpenWeatherIconExtension);
             icon18.Source = GenerateIconRequestUri(Constants.OpenWeatherIconsEndpoint, forecastNextDay[6].Weather[0].Icon, Constants.OpenWeatherIconExtension);
-            icon21.Source = GenerateIconRequestUri(Constants.OpenWeatherIconsEndpoint, forecastNextDay[7].Weather[0].Icon, Constants.OpenWeatherIconExtension);
+            icon21.Source = GenerateIconRequestUri(Constants.OpenWeatherIconsEndpoint, forecastNextDay[7].Weather[0].Icon, Constants.OpenWeatherIconExtension);*/
+
+            icon0.Source = ImageSource.FromFile(GetIconPath(forecastNextDay[0].Weather[0].Icon));
+            icon3.Source = ImageSource.FromFile(GetIconPath(forecastNextDay[1].Weather[0].Icon));
+            icon6.Source = ImageSource.FromFile(GetIconPath(forecastNextDay[2].Weather[0].Icon));
+            icon9.Source = ImageSource.FromFile(GetIconPath(forecastNextDay[3].Weather[0].Icon));
+            icon12.Source = ImageSource.FromFile(GetIconPath(forecastNextDay[4].Weather[0].Icon));
+            icon15.Source = ImageSource.FromFile(GetIconPath(forecastNextDay[5].Weather[0].Icon));
+            icon18.Source = ImageSource.FromFile(GetIconPath(forecastNextDay[6].Weather[0].Icon));
+            icon21.Source = ImageSource.FromFile(GetIconPath(forecastNextDay[7].Weather[0].Icon));
+
         }
 
         private void ShowErrorMessage()
@@ -151,6 +159,18 @@ namespace MyWeather.Views
             DisplayAlert("Connection Error", "An error occurred.\nPlease try again later.", "OK");
         }
 
+        // Due to some Android bugs we can not fetch the images from the internet.
+        // Thus, we have every image for the icons.
+
+        // LOCAL
+        private string GetIconPath(string iconID)
+        {
+            string requestUri = "icon_";
+            requestUri += iconID;
+            return requestUri;
+        }
+
+        // CONNECTED
         private string GenerateIconRequestUri(string endpoint, string iconID, string fileExtension)
         {
             string requestUri = endpoint;
